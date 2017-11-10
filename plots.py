@@ -1,6 +1,6 @@
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import HoverTool, BoxSelectTool
-from bokeh.layouts import column
+from bokeh.layouts import gridplot
 from openpyxl import load_workbook
 import numpy
 
@@ -89,7 +89,7 @@ p1.line(time_ms_3009[2:], ground_speed_kts_3009[2:], legend="Ground Speed", line
 p1.line(time_ms_3009[2:], tas_kts_3009[2:], legend="True Air Speed", line_color='red')
 p1.line(time_ms_3009[2:], ias_kts_3009[2:], legend="Indicated Air Speed", line_color='orange')
 
-p2 = figure(title="Pitch", x_range=p1.x_range)
+p2 = figure(title="Pitch", x_range=p1.x_range, y_axis_label="deg")
 p2.add_tools(hover)
 p2.add_tools(BoxSelectTool(dimensions="width"))
 p2.line(time_ms_4000[2:], pitch_4000[2:], legend="Pitch")
@@ -104,10 +104,10 @@ p3.line(time_ms_56101[2:], elv_pos_56101[2:], legend="Elevator pos (56101)", lin
 
 pitch_rate_4000_d = [x*180/numpy.pi for x in pitch_rate_4000[2:]]
 pitch_rate_3010_d = [x*180/numpy.pi for x in pitch_rate_3010[2:]]
-p4 = figure(title="Pitch Rate", x_range=p1.x_range)
+p4 = figure(title="Pitch Rate", x_range=p1.x_range, y_axis_label="deg/s")
 p4.add_tools(hover)
 p4.add_tools(BoxSelectTool(dimensions="width"))
 p4.line(time_ms_3010[2:], pitch_rate_3010_d, legend="Rate (3010)", line_color='blue')
 p4.line(time_ms_4000[2:], pitch_rate_4000_d, legend = "Rate (4000)", line_color="red")
 
-show(column(p1, p2, p3, p4, sizing_mode='stretch_both'))
+show(gridplot([[p1], [p2], [p3], [p4]], sizing_mode='stretch_both', merge_tools=True))
