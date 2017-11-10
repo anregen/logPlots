@@ -97,15 +97,17 @@ p2.line(time_ms_4000[2:], pitch_4000[2:], legend="Pitch")
 p3 = figure(title="Pitch Control", x_range=p1.x_range)
 p3.add_tools(hover)
 p3.add_tools(BoxSelectTool(dimensions="width"))
-p3.line(time_ms_55002[2:], lon_cmd_55002[2:], legend="Longitude Cmd (55002)", line_color='blue')
+lon_cmd_flip = [-1*x for x in lon_cmd_55002[2:]]
+p3.line(time_ms_55002[2:], lon_cmd_flip, legend="-Longitude Cmd (55002)", line_color='blue')
 p3.line(time_ms_56101[2:], elv_cmd_56101[2:], legend="Elevator cmd (56101)", line_color='red')
 p3.line(time_ms_56101[2:], elv_pos_56101[2:], legend="Elevator pos (56101)", line_color='orange')
 
-pitch_rate_4000 = [x*180/numpy.pi for x in pitch_rate_4000]
+pitch_rate_4000_d = [x*180/numpy.pi for x in pitch_rate_4000[2:]]
+pitch_rate_3010_d = [x*180/numpy.pi for x in pitch_rate_3010[2:]]
 p4 = figure(title="Pitch Rate", x_range=p1.x_range)
-p4.line(time_ms_3010[2:], pitch_rate_3010[2:], legend="Rate (3010)", line_color='blue')
-p4.line(time_ms_4000[2:], pitch_rate_4000[2:], legend = "Rate (4000)", line_color="red")
+p4.add_tools(hover)
+p4.add_tools(BoxSelectTool(dimensions="width"))
+p4.line(time_ms_3010[2:], pitch_rate_3010_d, legend="Rate (3010)", line_color='blue')
+p4.line(time_ms_4000[2:], pitch_rate_4000_d, legend = "Rate (4000)", line_color="red")
 
-
-# show the results
 show(column(p1, p2, p3, p4, sizing_mode='stretch_both'))
